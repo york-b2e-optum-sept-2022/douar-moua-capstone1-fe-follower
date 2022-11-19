@@ -7,12 +7,16 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { SurveyComponent } from './components/survey/survey.component';
 import { SurveyListComponent } from './components/survey-list/survey-list.component';
+import { QuestionListComponent } from './question-list/question-list.component';
+import { QuestionComponent } from './question/question.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SurveyComponent,
-    SurveyListComponent
+    SurveyListComponent,
+    QuestionListComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,
