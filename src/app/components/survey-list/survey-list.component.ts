@@ -1,15 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {SurveyService} from "../../services/survey.service";
+import {ISurvey} from "../../_interfaces/ISurvey";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-survey-list',
   templateUrl: './survey-list.component.html',
   styleUrls: ['./survey-list.component.css']
 })
-export class SurveyListComponent implements OnInit {
+export class SurveyListComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  surveyList: ISurvey[] = []
+  surveyListSub: Subscription
 
-  ngOnInit(): void {
+  @Output() viewSurvey = new EventEmitter<boolean>()
+  viewSurveyClick: boolean = false
+
+  constructor(private surveyService: SurveyService) {
+    this.surveyListSub = this.surveyService.$surveyList.subscribe(
+      surveyList => this.surveyList = surveyList)
   }
 
+  ngOnInit(): void {
+    this.surveyService.getSurveyList()
+  }
+
+  ngOnDestroy(): void {
+    this.surveyListSub.unsubscribe()
+  }
+
+
+  onViewSurveyClick(surveyId: number) {
+    this.surveyService.getSurveyById(surveyId)
+    this.viewSurvey.emit(!this.viewSurveyClick)
+  }
 }
