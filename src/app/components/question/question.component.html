@@ -1,0 +1,38 @@
+<!--<div>Survey Owner: {{question.surveyOwner | json}}</div>-->
+
+<div *ngFor="let question of questionList" class="card m-5 text-center">
+  <div class="card-header">
+    Question {{question.id}}: {{question.prompt}}
+  </div>
+  <div class="card-body">
+
+<!--    <div>-->
+<!--      <select [(ngModel)]="newQuestion.responseType" name="response-type" id="response-type">-->
+<!--        <option value="boolean response" [ngValue]="booleanResponse">True/False</option>-->
+<!--        <option value="multi-choice response" [ngValue]="multiResponse">Multiple-Choice</option>-->
+<!--        <option value="text response" [ngValue]="textResponse">Text</option>-->
+<!--      </select>-->
+<!--    </div>-->
+    <div *ngIf="question.responseType=='multiResponse'">
+      <select name="multiple-choice-answer" id="multi-response">
+        <option value="boolean response">CHOICE 1:</option>
+        <option value="multi-choice response">CHOICE 2:</option>
+        <option value="text response">CHOICE 3: </option>
+        <option value="text response">CHOICE 4: </option>
+      </select>
+    </div>
+
+    <div *ngIf="question.responseType=='booleanResponse'">
+      <select name="boolean-answer" id="boolean-response">
+        <option value="boolean response">TRUE</option>
+        <option value="multi-choice response">FALSE</option>
+      </select>
+    </div>
+
+    <div *ngIf="question.responseType=='textResponse'">
+      <input type="text">
+    </div>
+  </div>
+
+
+</div>
