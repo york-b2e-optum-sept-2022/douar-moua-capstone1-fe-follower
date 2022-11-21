@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {SurveyService} from "../../services/survey.service";
 import {ISurvey} from "../../_interfaces/ISurvey";
 import {Subscription} from "rxjs";
+import {QuestionService} from "../../services/question.service";
 
 @Component({
   selector: 'app-survey-list',
@@ -16,7 +17,7 @@ export class SurveyListComponent implements OnInit, OnDestroy {
   @Output() viewSurvey = new EventEmitter<boolean>()
   viewSurveyClick: boolean = false
 
-  constructor(private surveyService: SurveyService) {
+  constructor(private surveyService: SurveyService, private questionService: QuestionService) {
     this.surveyListSub = this.surveyService.$surveyList.subscribe(
       surveyList => this.surveyList = surveyList)
   }
@@ -32,6 +33,7 @@ export class SurveyListComponent implements OnInit, OnDestroy {
 
   onViewSurveyClick(surveyId: number) {
     this.surveyService.getSurveyById(surveyId)
+    this.questionService.getSurveyQuestionList(<number>surveyId)
     this.viewSurvey.emit(!this.viewSurveyClick)
   }
 }
