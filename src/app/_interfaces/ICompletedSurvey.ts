@@ -1,7 +1,9 @@
 import {IQuestion} from "./IQuestion";
 
 export interface ICompletedSurvey{
-  id: number,
+  id?: number,
   surveyId: number,
-  questions: IQuestion[],
+  surveyTitle: string,
+  questions?: IQuestion[],
+  answers?: string[]
 }
