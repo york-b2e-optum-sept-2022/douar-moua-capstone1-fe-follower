@@ -1,29 +1,86 @@
-<div *ngFor="let question of questionList" class="card m-5 text-center">
-  <div class="card-header">
-    Question {{question.id}}: {{question.prompt}}
-  </div>
-  <div class="card-body">
+<div *ngIf="beginSurvey==true" class="text-center m-5">
+  <p>Answer the question and click "Next Question" to go to the next question</p>
+  <div>Cancel the survey at any time by clicking "Back to List of Surveys" at the top right</div>
+</div>
 
+<div class="text-center m-5">
+  <h3>SURVEY: {{survey.title | uppercase}}</h3>
+  <div>Number of Questions: {{questionList.length}}</div>
+  <hr>
+</div>
+
+<div *ngIf="beginSurvey==false" class="text-center m-5">
+  <h3>Click "Start" to Begin</h3>
+  <button class="btn btn-primary mb-3" (click)="beginSurveyClick()">Start</button>
+</div>
+
+<div *ngIf="beginSurvey==true">
+
+  <div class="card-header">
+    Question: {{question.prompt}}
+  </div>
+
+  <div class="card-body">
     <div *ngIf="question.responseType=='multiResponse'">
-      <select [ngModel]="question.answer" name="multiple-choice-answer" id="multi-response">
-        <option value="boolean response">CHOICE 1:</option>
-        <option value="multi-choice response">CHOICE 2:</option>
-        <option value="text response">CHOICE 3: </option>
-        <option value="text response">CHOICE 4: </option>
+      <select [(ngModel)]="question.answer" name="multiple-choice-answer" id="multi-response">
+        <option value="boolean response" [ngValue]="choice1">CHOICE 1:</option>
+        <option value="multi-choice response" [ngValue]="choice2">CHOICE 2:</option>
+        <option value="text response" [ngValue]="choice3">CHOICE 3: </option>
+        <option value="text response" [ngValue]="choice4">CHOICE 4: </option>
       </select>
     </div>
 
     <div *ngIf="question.responseType=='booleanResponse'">
-      <select [ngModel]="question.answer" name="boolean-answer" id="boolean-response">
-        <option value="boolean response">TRUE</option>
-        <option value="multi-choice response">FALSE</option>
+      <select [(ngModel)]="question.answer" name="boolean-answer" id="boolean-response">
+        <option value="boolean response" [ngValue]="choiceTrue">TRUE</option>
+        <option value="multi-choice response" [ngValue]="choiceFalse">FALSE</option>
       </select>
     </div>
 
     <div *ngIf="question.responseType=='textResponse'">
-      <input type="text" [ngModel]="question.answer">
+      <input type="text" [(ngModel)]="question.answer">
     </div>
   </div>
 
+  <button class="btn btn-primary m-3" (click)="nextQuestionClick()">Next Question</button>
+
 
 </div>
+
+
+
+
+<!--<div *ngFor="let question of questionList" class="card m-5 text-center">-->
+
+<!--  <div class="card-header">-->
+<!--    Question {{question.id}}: {{question.prompt}}-->
+<!--  </div>-->
+
+<!--  <div class="card-body">-->
+
+<!--    <div *ngIf="question.responseType=='multiResponse'">-->
+<!--      <select [(ngModel)]="question.answer" name="multiple-choice-answer" id="multi-response">-->
+<!--        <option value="boolean response" [ngValue]="choice1">CHOICE 1:</option>-->
+<!--        <option value="multi-choice response" [ngValue]="choice2">CHOICE 2:</option>-->
+<!--        <option value="text response" [ngValue]="choice3">CHOICE 3: </option>-->
+<!--        <option value="text response" [ngValue]="choice4">CHOICE 4: </option>-->
+<!--      </select>-->
+<!--    </div>-->
+
+<!--    <div *ngIf="question.responseType=='booleanResponse'">-->
+<!--      <select [(ngModel)]="question.answer" name="boolean-answer" id="boolean-response">-->
+<!--        <option value="boolean response" [ngValue]="choiceTrue">TRUE</option>-->
+<!--        <option value="multi-choice response" [ngValue]="choiceFalse">FALSE</option>-->
+<!--      </select>-->
+<!--    </div>-->
+
+<!--    <div *ngIf="question.responseType=='textResponse'">-->
+<!--      <input type="text" [(ngModel)]="question.answer">-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--&lt;!&ndash;  <div class="m-3 text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;    <button class="btn btn-sm btn-warning">Submit Answer</button>&ndash;&gt;-->
+<!--&lt;!&ndash;  </div>&ndash;&gt;-->
+
+<!--</div>-->

@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IQuestion} from "../../_interfaces/IQuestion";
 import {Subscription} from "rxjs";
 import {QuestionService} from "../../services/question.service";
+import {ISurvey} from "../../_interfaces/ISurvey";
 
 @Component({
   selector: 'app-question-list',
@@ -12,6 +13,8 @@ export class QuestionListComponent implements OnInit, OnDestroy {
 
   questionList: IQuestion[] = []
   questionListSub: Subscription
+
+  @Input() survey!: ISurvey
 
   constructor(private questionService: QuestionService) {
     this.questionListSub = this.questionService.$questionList.subscribe(
