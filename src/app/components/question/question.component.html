@@ -1,4 +1,4 @@
-<div *ngIf="beginSurvey==true" class="text-center m-5">
+<div *ngIf="beginSurvey==true && completedSurvey==false" class="text-center m-5">
   <p>Answer the question and click "Next Question" to go to the next question</p>
   <div>Cancel the survey at any time by clicking "Back to List of Surveys" at the top right</div>
 </div>
@@ -14,7 +14,7 @@
   <button class="btn btn-primary mb-3" (click)="beginSurveyClick()">Start</button>
 </div>
 
-<div *ngIf="beginSurvey==true">
+<div *ngIf="beginSurvey==true && completedSurvey==false">
 
   <div class="card-header">
     Question: {{question.prompt}}
@@ -44,7 +44,11 @@
 
   <button class="btn btn-primary m-3" (click)="nextQuestionClick()">Next Question</button>
 
+</div>
 
+<div *ngIf="completedSurvey==true" class="text-center m-5">
+  Thank you for completing the survey! <br>
+  You may go back to the list of available survey's to take another one or simply close this application.
 </div>
 
 

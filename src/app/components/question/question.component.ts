@@ -2,9 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IQuestion} from "../../_interfaces/IQuestion";
 import {Subscription} from "rxjs";
 import {QuestionService} from "../../services/question.service";
-import {CompletedSurveyService} from "../../services/completed-survey.service";
 import {ISurvey} from "../../_interfaces/ISurvey";
-import {IResponse} from "../../_interfaces/IResponse";
 
 @Component({
   selector: 'app-question',
@@ -22,6 +20,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   @Input() survey!: ISurvey
 
   beginSurvey: boolean = false
+  completedSurvey: boolean = false
 
   choice1: string = "Choice 1"
   choice2: string = "Choice 2"
@@ -31,13 +30,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
   choiceTrue: string = "true"
   choiceFalse: string = "false"
 
-  constructor(private questionService: QuestionService, private completedSurveyService: CompletedSurveyService) {
+  constructor(private questionService: QuestionService) {
     this.questionListSub = this.questionService.$questionList.subscribe(
       questionList => this.questionList = questionList);
-
-    // this.submitSurveyToggleSub = this.completedSurveyService.$submitSurvey.subscribe(
-    //   submitSurveyTrue => this.submitQuestionsAnswers());
-
   }
   ngOnInit(): void {
   }
@@ -55,6 +50,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
   nextQuestionClick(){
     this.question = this.questionList[this.questionIndex];
     this.questionIndex++;
+    if (this.questionIndex > this.questionList.length){
+      this.completedSurvey = true
+    }
+
   }
 
 }
