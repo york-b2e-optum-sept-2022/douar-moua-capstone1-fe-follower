@@ -5,5 +5,5 @@ export interface ICompletedSurvey{
   surveyId: number,
   surveyTitle: string,
   questions?: IQuestion[],
-  answers?: string[]
+  // answers?: IQuestion[]
 }

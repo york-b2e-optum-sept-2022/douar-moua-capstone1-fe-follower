@@ -5,14 +5,16 @@
   <p>Take Surveys Here</p>
 </div>
 
+<!--SURVEY LIST-->
 <div *ngIf="viewSurvey==false">
   <app-survey-list
     (viewSurvey)="toggleViewSurveyClick($event)"
   ></app-survey-list>
 </div>
 
+
 <div *ngIf="viewSurvey==true">
-  <div class="d-flex justify-content-end m-3" style="background: lightgray; padding: 1rem">
+  <div *ngIf="beginSurvey==false" class="d-flex justify-content-end m-3" style="background: lightgray; padding: 1rem">
     <!--    toggle back to survey list-->
     <button class="btn btn-primary" (click)="toggleViewSurveyClick(false)">Back to List of Surveys</button>
   </div>

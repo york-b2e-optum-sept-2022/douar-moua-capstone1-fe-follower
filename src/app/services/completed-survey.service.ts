@@ -1,26 +1,59 @@
 import { Injectable } from '@angular/core';
 import {HttpService} from "./http.service";
-import {Subject} from "rxjs";
-import {ISurvey} from "../_interfaces/ISurvey";
-import {IQuestion} from "../_interfaces/IQuestion";
+import {IResponse} from "../_interfaces/IResponse";
+import {BehaviorSubject, first, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompletedSurveyService {
 
-  submitSurveyToggle: boolean = true
-  $submitSurvey = new Subject<boolean>()
+  // $responses = new BehaviorSubject<IResponse[]>([])
+  $response = new BehaviorSubject<IResponse | null>(null)
+
+  beginSurvey: boolean = false
+  $beginSurvey = new Subject<boolean>()
 
   constructor(private httpService: HttpService) { }
 
-  surveySubmitClicked(){
-    this.$submitSurvey.next(this.submitSurveyToggle)
+  public beginSurveyToggle(toggleBeginSurvey: boolean){
+    this.$beginSurvey.next(toggleBeginSurvey)
   }
 
-  submitSurvey(survey: ISurvey, questions: IQuestion[]){
-    console.log(survey)
-    console.log(questions)
+  public submitResponse(response: IResponse){
+    this.httpService.submitResponse(response).pipe(first()).subscribe({
+      next: response => {
+        this.$response.next(response)
+      },
+      error: err => {
+        console.error(err)
+        alert("Unable to submit response, please try again later.")
+      }
+    })
   }
+
+  public deleteResponses(instance: number){
+    this.httpService.deleteResponses(instance).pipe(first()).subscribe({
+      next: () => {
+        this.$beginSurvey.next(this.beginSurvey)
+      },
+      error: err => {
+        console.error(err)
+        alert("Unable to cancel/delete your responses, please try again later.")
+      }
+    })
+  }
+
+  // public submitResponses(responses: IResponse[]){
+  //   this.httpService.submitResponses(responses).pipe(first()).subscribe({
+  //     next: responses => {
+  //       this.$responses.next(responses)
+  //     },
+  //     error: err => {
+  //       console.error(err)
+  //       alert("Unable to submit survey, please try again later.")
+  //     }
+  //   })
+  // }
 
 }
