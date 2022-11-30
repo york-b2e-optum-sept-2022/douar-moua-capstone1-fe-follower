@@ -1,6 +1,14 @@
+<div *ngIf="beginSurvey==true" class="d-flex justify-content-end m-3" style="background: lightgray; padding: 1rem">
+  <p style="margin-right: 2rem">You may cancel the survey at any point</p>
+  <button class="btn btn-warning" (click)="cancelSurveyClick()">Cancel</button>
+</div>
+
+
 <div *ngIf="beginSurvey==true && completedSurvey==false" class="text-center m-5">
-  <p>Answer the question and click "Next Question" to go to the next question</p>
-  <div>Cancel the survey at any time by clicking "Back to List of Surveys" at the top right</div>
+  <p>
+    You may not go back to change your answer, so please read and answer the questions carefully <br>
+    Answer the question and click "Next Question" to go to the next question
+  </p>
 </div>
 
 <div class="text-center m-5">
@@ -48,7 +56,7 @@
 
 <div *ngIf="completedSurvey==true" class="text-center m-5">
   Thank you for completing the survey! <br>
-  You may go back to the list of available survey's to take another one or simply close this application.
+  You may take the survey again, go back to the list of available surveys, or close this application.
 </div>
 
 

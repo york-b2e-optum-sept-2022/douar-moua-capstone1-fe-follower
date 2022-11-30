@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {QuestionService} from "../../services/question.service";
 import {ISurvey} from "../../_interfaces/ISurvey";
 import {IResponse} from "../../_interfaces/IResponse";
+import {CompletedSurveyService} from "../../services/completed-survey.service";
 
 @Component({
   selector: 'app-question',
@@ -32,10 +33,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
   choiceFalse: string = "false"
 
   instance: number = 0
-  responseList: IResponse[] = []
+  // responseList: IResponse[] = []
 
 
-  constructor(private questionService: QuestionService) {
+  constructor(private questionService: QuestionService, private completedSurveyService: CompletedSurveyService) {
     this.questionListSub = this.questionService.$questionList.subscribe(
       questionList => this.questionList = questionList);
   }
@@ -51,6 +52,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     this.questionIndex++;
     this.beginSurvey=true
     this.instance = new Date().getTime()
+    this.completedSurveyService.beginSurveyToggle(this.beginSurvey)
   }
 
   nextQuestionClick(){
@@ -63,25 +65,35 @@ export class QuestionComponent implements OnInit, OnDestroy {
       instance: this.instance
     }
 
-    // require answer
+    // -- require answer --
     if (response.answer === null || ""){
       alert("Please answer question before going to the next question!")
       return
     }
 
-    // store response in responseList
-    this.responseList.push(response)
-    console.log(this.responseList)
+    // // -- store response in responseList --
+    // this.responseList.push(response)
 
-    // show next question & set up next question for show
+    // -- submit response to database --
+    this.completedSurveyService.submitResponse(response)
+
+    // -- show next question & set up next question for show --
     this.question = this.questionList[this.questionIndex];
     this.questionIndex++;
 
-    // notify completion of survey
+    // -- IF all questions are answered, notify completion --
     if (this.questionIndex > this.questionList.length){
+      // this.completedSurveyService.submitResponses(this.responseList)
       this.completedSurvey = true
+      this.beginSurvey = false
+      this.completedSurveyService.beginSurveyToggle(this.beginSurvey)
     }
 
   }
 
+  cancelSurveyClick() {
+    this.completedSurveyService.deleteResponses(this.instance)
+    this.beginSurvey=false
+    this.questionIndex = 0
+  }
 }

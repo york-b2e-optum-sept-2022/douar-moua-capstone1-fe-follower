@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ISurvey} from "../_interfaces/ISurvey";
 import {IQuestion} from "../_interfaces/IQuestion";
-import {ICompletedSurvey} from "../_interfaces/ICompletedSurvey";
+import {IResponse} from "../_interfaces/IResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -31,15 +31,27 @@ export class HttpService {
     ) as Observable<IQuestion[]>
   }
 
-  // --- COMPLETED SURVEYS ---
+  // --- COMPLETED SURVEYS STUFF ---
 
-  public submitCompletedSurvey(completedSurvey: ICompletedSurvey){
-    console.log(completedSurvey)
-    return this.httpClient.post('http://localhost:8080/api/completed-survey',
+  public submitResponse(response: IResponse){
+    return this.httpClient.post('http://localhost:8080/api/response',
       {
-        surveyId: completedSurvey.surveyId,
-        surveyTitle: completedSurvey.surveyTitle,
-        questions: completedSurvey.questions,
-      }) as Observable<ICompletedSurvey>
+        answer: response.answer,
+        question: response.question,
+        questionId: response.questionId,
+        surveyId: response.surveyId,
+        surveyTitle: response.surveyTitle,
+        instance: response.instance}
+    ) as Observable<IResponse>
   }
+
+  public deleteResponses(instance: number){
+    return this.httpClient.delete(`http://localhost:8080/api/response?instance=${instance}`)
+  }
+
+  // public submitResponses(responses: IResponse[]){
+  //   return this.httpClient.post('http://localhost:8080/api/response/add-responses',
+  //     {responses: responses}
+  //     ) as Observable<IResponse[]>
+  // }
 }
